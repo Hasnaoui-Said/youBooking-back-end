@@ -1,10 +1,12 @@
-package next.youbooking.yb.service;
+package next.youbooking.yb.service.impl;
 
 import next.youbooking.yb.models.entity.Address;
 import next.youbooking.yb.exception.BadRequestException;
 import next.youbooking.yb.repository.AddressRep;
+import next.youbooking.yb.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class AddressServiceImpl implements AddressService{
+public class AddressServiceImpl implements AddressService {
     @Autowired
     AddressRep addressRep;
 
@@ -44,6 +46,10 @@ public class AddressServiceImpl implements AddressService{
     @Override
     public Page<Address> findAll(Pageable pageable) {
         return addressRep.findAll(pageable);
+    }
+    @Override
+    public Page<Address> findAll(PageRequest pageRequest) {
+        return addressRep.findAll(pageRequest);
     }
 
     @Override

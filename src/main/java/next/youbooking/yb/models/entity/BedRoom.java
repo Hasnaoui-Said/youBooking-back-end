@@ -6,6 +6,7 @@ import next.youbooking.yb.models.enums.StatusRoom;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -22,6 +23,8 @@ public class BedRoom implements Serializable {
     private TypeRoom typeRoom;
     @Enumerated(EnumType.STRING)
     private StatusRoom statusRoom;
+    @OneToMany(mappedBy = "bedroom")
+    private List<Reservation> reservations;
     @ManyToOne
     private Hotel hotel;
 
@@ -83,5 +86,14 @@ public class BedRoom implements Serializable {
 
     public void setHotel(Hotel hotel) {
         this.hotel = hotel;
+    }
+
+    @JsonIgnore
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
 }

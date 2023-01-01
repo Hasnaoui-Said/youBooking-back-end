@@ -6,6 +6,7 @@ import next.youbooking.yb.security.models.entity.User;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -16,13 +17,14 @@ public class Reservation implements Serializable {
     private UUID uuid;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh-mm-ss")
     private Date startDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh-mm-ss")
     private Date endDate;
     private double rate;
 
     @ManyToOne
-    private User user;
+    private User guest;
     @ManyToOne
-    private BedRoom bedRoom;
+    private BedRoom bedroom;
 
     public Reservation() {
     }
@@ -60,18 +62,18 @@ public class Reservation implements Serializable {
     }
 
     public User getUser() {
-        return user;
+        return guest;
     }
 
     public void setUser(User user) {
-        this.user = user;
+        this.guest = user;
     }
 
     public BedRoom getBedRoom() {
-        return bedRoom;
+        return bedroom;
     }
 
     public void setBedRoom(BedRoom bedRoom) {
-        this.bedRoom = bedRoom;
+        this.bedroom = bedRoom;
     }
 }
