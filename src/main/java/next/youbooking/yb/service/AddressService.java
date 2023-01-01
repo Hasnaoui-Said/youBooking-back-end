@@ -2,6 +2,7 @@ package next.youbooking.yb.service;
 
 import next.youbooking.yb.models.entity.Address;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -18,6 +19,8 @@ public interface AddressService {
     List<Address> findAll();
 
     Page<Address> findAll(Pageable pageable);
+
+    Page<Address> findAll(PageRequest pageRequest);
 
     Address save(Address address);
 

@@ -2,7 +2,9 @@ package next.youbooking.yb.security.models.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import next.youbooking.yb.models.entity.Hotel;
+import next.youbooking.yb.models.entity.Reservation;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -43,6 +45,8 @@ public class User implements Serializable {
     private List<UsersRoles> roles;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Hotel> hotels;
+    @OneToMany(mappedBy = "guest", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Reservation> reservations;
 
     public User() {
     }
@@ -143,6 +147,7 @@ public class User implements Serializable {
         this.roles = roles;
     }
 
+    @JsonIgnore
     public List<Hotel> getHotels() {
         return hotels;
     }
@@ -151,4 +156,12 @@ public class User implements Serializable {
         this.hotels = hotels;
     }
 
+    @JsonIgnore
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
+    }
 }
