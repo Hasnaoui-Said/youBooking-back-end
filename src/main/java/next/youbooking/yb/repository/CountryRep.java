@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface CoutryRep extends JpaRepository<Country, UUID> {
+public interface CountryRep extends JpaRepository<Country, UUID> {
     Country findByCode(String code);
     int deleteByCode(String code);
     Country findByName(String name);

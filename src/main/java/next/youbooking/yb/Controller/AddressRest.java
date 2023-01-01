@@ -79,12 +79,11 @@ public class AddressRest {
             ResponseObject<Address> responseObject = new ResponseObject<>(true,
                     "find all!!", save);
             return new ResponseEntity<>(responseObject, HttpStatus.OK);
-        }catch (BadRequestException e){
+        } catch (BadRequestException e) {
             ResponseObject<Address> responseObject = new ResponseObject<>(false,
                     e.getMessage(), address);
             return new ResponseEntity<>(responseObject, HttpStatus.BAD_REQUEST);
         }
-
     }
 
     @GetMapping("/exist")
