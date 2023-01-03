@@ -30,7 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         // If the user is not found, throw an exception
         if (appUser == null) {
             System.out.println(String.format("User with username %s was not found", username));
-            throw new UsernameNotFoundException(String.format("User with username %s was not found", username));
+            throw new UsernameNotFoundException("Bad credentials");
         }
         Collection<GrantedAuthority> authorities = appUser.getRoles().stream()
                 .map(usersRoles -> new SimpleGrantedAuthority(usersRoles.getRole().getName()))

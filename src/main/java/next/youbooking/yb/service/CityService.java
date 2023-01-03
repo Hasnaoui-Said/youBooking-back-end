@@ -27,4 +27,10 @@ public interface CityService {
     Page<City> findAll(PageRequest pageRequest);
 
     City save(City city);
+
+    City update(City city);
+
+    boolean existsByCode(String code);
+
+    boolean existsByName(String name);
 }

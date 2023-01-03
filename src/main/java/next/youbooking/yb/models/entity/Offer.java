@@ -55,12 +55,22 @@ public class Offer implements Serializable {
         this.status = status;
     }
 
-    @JsonIgnore
     public Hotel getHotel() {
         return hotel;
     }
 
     public void setHotel(Hotel hotel) {
         this.hotel = hotel;
+    }
+
+    @Override
+    public String toString() {
+        return "Offer{" +
+                "uuid=" + uuid +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                ", hotel=" + hotel +
+                '}';
     }
 }

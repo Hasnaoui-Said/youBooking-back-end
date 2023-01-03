@@ -24,4 +24,8 @@ public interface AttachmentService {
     public Page<Attachment> findAll(Pageable pageable);
 
     public Attachment save(Attachment attachment);
+
+    Attachment update(Attachment attachment);
+
+    boolean existsByTitle(String titre);
 }

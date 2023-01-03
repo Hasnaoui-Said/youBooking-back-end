@@ -64,4 +64,19 @@ public class CityServiceImpl implements CityService {
     public City save(City city) {
         return cityRep.save(city);
     }
+
+    @Override
+    public City update(City city) {
+        return null;
+    }
+
+    @Override
+    public boolean existsByCode(String code) {
+        return cityRep.existsByZipCode(code);
+    }
+
+    @Override
+    public boolean existsByName(String name) {
+        return cityRep.existsByName(name);
+    }
 }

@@ -22,5 +22,16 @@ public interface UserService {
 
     Page<User> findAll(PageRequest pageRequest);
 
-    User save(User entity);
+//    User save(User entity);
+    User save(User user, String role);
+
+    boolean existsByUsername(String username);
+
+    boolean existsByEmail(String email);
+
+    User update(User user);
+
+    int deleteByUsername(String username);
+
+    int deleteByEmail(String email);
 }

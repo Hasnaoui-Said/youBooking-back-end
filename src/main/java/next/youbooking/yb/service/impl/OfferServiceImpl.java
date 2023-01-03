@@ -61,7 +61,18 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public <S extends Offer> S save(S entity) {
-        return offerRep.save(entity);
+    public Offer save(Offer offer) {
+        return offerRep.save(offer);
+    }
+
+
+    @Override
+    public Offer update(Offer offer) {
+        return null;
+    }
+
+    @Override
+    public boolean existsByTitle(String title) {
+        return offerRep.existsByTitle(title);
     }
 }

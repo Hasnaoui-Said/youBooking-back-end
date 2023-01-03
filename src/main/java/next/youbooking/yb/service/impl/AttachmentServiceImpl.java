@@ -54,4 +54,14 @@ public class AttachmentServiceImpl implements AttachmentService {
     public Attachment save(Attachment attachment) {
         return attachmentRep.save(attachment);
     }
+
+    @Override
+    public Attachment update(Attachment attachment) {
+        return null;
+    }
+
+    @Override
+    public boolean existsByTitle(String titre) {
+        return attachmentRep.existsByTitle(titre);
+    }
 }

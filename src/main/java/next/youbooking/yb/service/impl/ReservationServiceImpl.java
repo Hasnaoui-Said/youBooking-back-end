@@ -64,4 +64,9 @@ public class ReservationServiceImpl implements ReservationService {
     public Reservation save(Reservation entity) {
         return reservationRep.save(entity);
     }
+
+    @Override
+    public Reservation update(Reservation reservation) {
+        return null;
+    }
 }

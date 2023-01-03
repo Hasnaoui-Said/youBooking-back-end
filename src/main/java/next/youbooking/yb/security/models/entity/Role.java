@@ -51,7 +51,7 @@ public class Role implements Serializable {
     @Override
     public String toString() {
         return "Role{" +
-                ", role='" + name + '\'' +
+                "role='" + name + '\'' +
                 ", description='" + description + '\'' +
                 '}';
     }

@@ -5,16 +5,23 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import next.youbooking.yb.exception.BadRequestException;
+import next.youbooking.yb.security.models.domains.ResponseObject;
 import next.youbooking.yb.security.models.entity.User;
 import next.youbooking.yb.security.service.UserDetailsServiceImpl;
 import next.youbooking.yb.security.util.JwtUtil;
+import next.youbooking.yb.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.server.reactive.HttpHandler;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Date;
 import java.util.HashMap;
@@ -27,10 +34,13 @@ import java.util.stream.Collectors;
 public class TokenRest {
     @Autowired
     UserDetailsServiceImpl userDetailsService;
+    @Autowired
+    UserService userService;
+
     @GetMapping("/refresh")
-    public void refreshJeton(HttpServletRequest request, HttpServletResponse response) throws Exception{
+    public void refreshJeton(HttpServletRequest request, HttpServletResponse response) throws Exception {
         String auth = request.getHeader(JwtUtil.AUTH_HEADER);
-        if (auth != null && auth.startsWith(JwtUtil.BEARER)){
+        if (auth != null && auth.startsWith(JwtUtil.BEARER)) {
             try {
                 String jwt = auth.substring(JwtUtil.BEARER.length());
                 Algorithm algorithm = Algorithm.HMAC256(JwtUtil.SECRET);
@@ -39,7 +49,7 @@ public class TokenRest {
                 String username = decodedJWT.getSubject();
                 User user = userDetailsService.findByUsername(username);
 
-                List <String> authorities = user.getRoles().stream()
+                List<String> authorities = user.getRoles().stream()
                         .map(usersRoles -> usersRoles.getRole().getName()).collect(Collectors.toList());
 
                 String jwtSuccessToken = JWT.create()
@@ -60,12 +70,12 @@ public class TokenRest {
                 response.setContentType("application/json");
                 new ObjectMapper().writeValue(response.getOutputStream(), jeton);
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 response.setHeader("error-message", e.getMessage());
                 response.sendError(HttpServletResponse.SC_FORBIDDEN);
             }
 
-        }else {
+        } else {
             throw new RuntimeException("Refresh token required");
         }
     }
@@ -74,5 +84,22 @@ public class TokenRest {
     @GetMapping("/profile")
     public User getProfile(Principal principal) {
         return userDetailsService.findByUsername(principal.getName());
+    }
+
+    @PostMapping("/sign_in")
+    public ResponseEntity<ResponseObject<?>> save(@RequestBody User user, @RequestParam(name = "role") String role) {
+
+        try {
+            User save = userService.save(user, role);
+            ResponseObject<User> responseObject = new ResponseObject<>(true,
+                    "User saved successfully", save);
+            return new ResponseEntity<>(responseObject, HttpStatus.OK);
+        } catch (BadRequestException e) {
+            System.out.println(this);
+            System.out.println(e.getMessage());
+            ResponseObject<User> responseObject = new ResponseObject<>(false,
+                    e.getMessage(), user);
+            return new ResponseEntity<>(responseObject, HttpStatus.BAD_REQUEST);
+        }
     }
 }

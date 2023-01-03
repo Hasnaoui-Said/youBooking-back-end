@@ -63,4 +63,14 @@ public class Address implements Serializable {
     public void setHotel(Hotel hotel) {
         this.hotel = hotel;
     }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "uuid=" + uuid +
+                ", address='" + address + '\'' +
+                ", street='" + street + '\'' +
+                ", city=" + city +
+                '}';
+    }
 }

@@ -23,14 +23,22 @@ public class User implements Serializable {
     @Id
     @Column(unique = true, name = "username")
     @Size(min = 4, max = 20)
+    @NotEmpty @NotNull
     private String username;
     @Column(unique = true)
+    @Size(min = 8, max = 50)
+    @NotEmpty @NotNull
     private String email;
     //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Size(min = 4, max = 15)
+    @NotEmpty @NotNull
     private String password;
     private String phone;
     private String firstName;
     private String lastName;
+    @Column(unique = true)
+    @Size(min = 4, max = 10)
+    @NotEmpty @NotNull
     private String cin;
 //    private String picture;
 //    private String accountState;
@@ -163,5 +171,23 @@ public class User implements Serializable {
 
     public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "uuid=" + uuid +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", phone='" + phone + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", cin='" + cin + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", isActive=" + isActive +
+                ", roles=" + roles +
+                '}';
     }
 }

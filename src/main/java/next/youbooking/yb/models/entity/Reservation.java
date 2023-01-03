@@ -76,4 +76,16 @@ public class Reservation implements Serializable {
     public void setBedRoom(BedRoom bedRoom) {
         this.bedroom = bedRoom;
     }
+
+    @Override
+    public String toString() {
+        return "Reservation{" +
+                "uuid=" + uuid +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", rate=" + rate +
+                ", guest=" + guest +
+                ", bedroom=" + bedroom +
+                '}';
+    }
 }

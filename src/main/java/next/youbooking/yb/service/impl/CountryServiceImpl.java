@@ -54,4 +54,19 @@ public class CountryServiceImpl implements CountryService {
     public Country save(Country country) {
         return countryRep.save(country);
     }
+
+    @Override
+    public Country update(Country country) {
+        return null;
+    }
+
+    @Override
+    public boolean existsByCode(String code) {
+        return countryRep.existsByCode(code);
+    }
+
+    @Override
+    public boolean existsByName(String name) {
+        return countryRep.existsByName(name);
+    }
 }

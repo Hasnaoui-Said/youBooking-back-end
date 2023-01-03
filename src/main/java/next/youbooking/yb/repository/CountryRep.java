@@ -12,4 +12,8 @@ public interface CountryRep extends JpaRepository<Country, UUID> {
     int deleteByCode(String code);
     Country findByName(String name);
     int deleteByName(String name);
+
+    boolean existsByCode(String code);
+
+    boolean existsByName(String name);
 }

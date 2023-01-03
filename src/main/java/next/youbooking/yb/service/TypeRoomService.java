@@ -19,4 +19,10 @@ public interface TypeRoomService {
     Page<TypeRoom> findAll(PageRequest pageRequest);
 
     TypeRoom save(TypeRoom entity);
+
+    TypeRoom update(TypeRoom typeRome);
+
+    boolean existsByUuid(String uuid);
+
+    boolean existsByName(String name);
 }

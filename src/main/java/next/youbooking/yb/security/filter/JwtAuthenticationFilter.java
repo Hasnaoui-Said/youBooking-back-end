@@ -2,8 +2,13 @@ package next.youbooking.yb.security.filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import next.youbooking.yb.security.models.domains.ResponseObject;
 import next.youbooking.yb.security.util.JwtUtil;
+import next.youbooking.yb.security.vo.Jeton;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,10 +21,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.PrintWriter;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -38,8 +41,21 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String password = request.getParameter("password");
         // Stock data as object
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
-        // authenticate
-        return this.authenticationManager.authenticate(authenticationToken);
+
+//        try {
+            // authenticate
+            return this.authenticationManager.authenticate(authenticationToken);
+//        } catch (AuthenticationException e) {
+//            // handle authentication exception
+//            ObjectMapper mapper = new ObjectMapper();
+//            response.setHeader("Access-Control-Allow-Origin", "*");
+//            response.setContentType("application/json");
+//            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+//            ResponseObject<AuthenticationException> responseObject = new ResponseObject<>(false, e.getMessage(), e);
+//            response.setContentType("application/json");
+//
+//        }
+
     }
 
     // authentication successfully use library auth0 to create token
@@ -66,12 +82,24 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                     .withExpiresAt(new Date(System.currentTimeMillis() + JwtUtil.EXPIRED_JETON_REFRESH))
                     .withIssuer(request.getRequestURL().toString())
                     .sign(algorithm);
-            Map<String, String> jeton = new HashMap<>();
-            // a revoir refresh token
-            jeton.put("successJeton", jwtSuccessToken);
-            jeton.put("refreshJeton", jwtRefreshToken);
+//            Map<String, String> jeton = new HashMap<>();
+//            // a revoir refresh token
+//            jeton.put("successJeton", jwtSuccessToken);
+//            jeton.put("refreshJeton", jwtRefreshToken);
+
+            ObjectMapper mapper = new ObjectMapper();
+//            String jsonString = mapper.writeValueAsString(jeton);
+            Jeton jeton = new Jeton(jwtSuccessToken, jwtRefreshToken);
+
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            // response.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT");
+            // response.setHeader("Access-Control-Allow-Headers", "Content-Type");
             response.setContentType("application/json");
-            new ObjectMapper().writeValue(response.getOutputStream(), jeton);
+            response.setStatus(HttpServletResponse.SC_OK);
+            // new ObjectMapper().writeValue(response.getOutputStream(), jeton);
+            ResponseObject<Jeton> responseObject = new ResponseObject<>(true, "connected successfully", jeton);
+            ResponseEntity<ResponseObject<Jeton>> responseEntity = new ResponseEntity<>(responseObject, HttpStatus.OK);
+            response.getWriter().println(mapper.writeValueAsString(responseEntity));
         }
     }
 }

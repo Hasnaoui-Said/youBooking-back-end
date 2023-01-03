@@ -111,4 +111,16 @@ public class Hotel implements Serializable {
         this.stateHotel = stateHotel;
     }
 
+    @Override
+    public String toString() {
+        return "Hotel{" +
+                "uuid=" + uuid +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", user=" + user +
+                ", address=" + address +
+                ", attachments=" + attachments +
+                ", stateHotel=" + stateHotel +
+                '}';
+    }
 }

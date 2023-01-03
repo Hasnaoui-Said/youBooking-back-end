@@ -74,4 +74,24 @@ public class HotelServiceImpl implements HotelService {
     public Hotel save(Hotel hotel) {
         return hotelRep.save(hotel);
     }
+
+    @Override
+    public Hotel findByCode(String code) {
+        return null;
+    }
+
+    @Override
+    public Hotel update(Hotel country) {
+        return null;
+    }
+
+    @Override
+    public boolean existsByName(String name) {
+        return hotelRep.existsByName(name);
+    }
+
+    @Override
+    public boolean existsByUuid(String uuid) {
+        return hotelRep.existsByUuid(uuid);
+    }
 }

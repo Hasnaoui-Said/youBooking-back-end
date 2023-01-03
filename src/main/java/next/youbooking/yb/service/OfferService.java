@@ -26,5 +26,9 @@ public interface OfferService {
 
     Page<Offer> findAll(PageRequest pageRequest);
 
-    <S extends Offer> S save(S entity);
+    Offer save(Offer offer);
+
+    Offer update(Offer offer);
+
+    boolean existsByTitle(String title);
 }

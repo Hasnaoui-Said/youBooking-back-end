@@ -54,4 +54,13 @@ public class TypeRoom implements Serializable {
     public void setBedRooms(List<BedRoom> bedRooms) {
         this.bedRooms = bedRooms;
     }
+
+    @Override
+    public String toString() {
+        return "TypeRoom{" +
+                "uuid=" + uuid +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

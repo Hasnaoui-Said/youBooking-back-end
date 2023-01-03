@@ -11,7 +11,12 @@ import java.util.UUID;
 public interface AttachmentRep extends JpaRepository<Attachment, UUID> {
 
     Attachment findByUuid(String uuid);
+
     List<Attachment> findAllByHotelUuid(String uuid);
+
     List<Attachment> findAllByHotelName(String uuid);
+
     int deleteByUuid(String uuid);
+
+    boolean existsByTitle(String titre);
 }

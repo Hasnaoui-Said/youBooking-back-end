@@ -45,4 +45,19 @@ public class TypeRoomServiceImpl implements TypeRoomService {
     public TypeRoom save(TypeRoom entity) {
         return typeRoomRep.save(entity);
     }
+
+    @Override
+    public TypeRoom update(TypeRoom typeRome) {
+        return null;
+    }
+
+    @Override
+    public boolean existsByUuid(String uuid) {
+        return existsByUuid(uuid);
+    }
+
+    @Override
+    public boolean existsByName(String name) {
+        return existsByName(name);
+    }
 }

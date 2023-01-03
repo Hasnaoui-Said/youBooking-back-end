@@ -65,4 +65,14 @@ public class Attachment implements Serializable {
     public void setHotel(Hotel hotel) {
         this.hotel = hotel;
     }
+
+    @Override
+    public String toString() {
+        return "Attachment{" +
+                "uuid=" + uuid +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", documents=" + documents +
+                '}';
+    }
 }

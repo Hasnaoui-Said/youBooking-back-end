@@ -31,4 +31,13 @@ public interface HotelService {
     Page<Hotel> findAll(PageRequest pageRequest);
 
     Hotel save(Hotel hotel);
+
+    Hotel findByCode(String code);
+
+
+    Hotel update(Hotel country);
+
+    boolean existsByName(String name);
+
+    boolean existsByUuid(String code);
 }

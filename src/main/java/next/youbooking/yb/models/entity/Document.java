@@ -46,4 +46,12 @@ public class Document implements Serializable {
     public void setAttachment(Attachment attachment) {
         this.attachment = attachment;
     }
+
+    @Override
+    public String toString() {
+        return "Document{" +
+                "uuid=" + uuid +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }

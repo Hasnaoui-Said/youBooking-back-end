@@ -23,4 +23,10 @@ public interface CountryService {
     Page<Country> findAll(PageRequest pageRequest);
 
     Country save(Country country);
+
+    Country update(Country country);
+
+    boolean existsByCode(String code);
+
+    boolean existsByName(String name);
 }

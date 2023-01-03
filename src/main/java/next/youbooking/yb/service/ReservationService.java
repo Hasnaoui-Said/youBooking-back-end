@@ -27,4 +27,6 @@ public interface ReservationService {
     Page<Reservation> findAll(PageRequest pageRequest);
 
     Reservation save(Reservation entity);
+
+    Reservation update(Reservation reservation);
 }

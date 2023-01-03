@@ -18,4 +18,8 @@ public interface CityRep extends JpaRepository<City, UUID> {
     int deleteByZipCode(String code);
     List<City> findByCountryName(String name);
     Page<City> findByCountryName(String name, PageRequest pageRequest);
+
+    boolean existsByZipCode(String code);
+
+    boolean existsByName(String name);
 }

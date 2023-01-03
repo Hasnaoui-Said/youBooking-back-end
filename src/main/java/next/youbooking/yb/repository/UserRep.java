@@ -13,4 +13,12 @@ public interface UserRep extends JpaRepository<User, UUID> {
     User findByCin(String cin);
     User findByEmail(String email);
     int deleteByUuid(String uuid);
+
+    boolean existsByUsername(String username);
+
+    boolean existsByEmail(String email);
+
+    int deleteByUsername(String username);
+
+    int deleteByEmail(String email);
 }

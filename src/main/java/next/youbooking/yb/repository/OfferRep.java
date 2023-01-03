@@ -16,4 +16,6 @@ public interface OfferRep extends JpaRepository<Offer, UUID> {
     List<Offer> findAllByStatus(String status);
     Offer findByTitle(String title);
     int deleteByTitle(String title);
+
+    boolean existsByTitle(String title);
 }
