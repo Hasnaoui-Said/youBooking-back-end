@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.Collection;
 
-public class JwtAutorizationFilter extends OncePerRequestFilter {
+public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     // any request this method execute et verify sign of user

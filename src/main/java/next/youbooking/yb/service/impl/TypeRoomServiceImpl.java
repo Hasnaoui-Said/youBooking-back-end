@@ -9,7 +9,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class TypeRoomServiceImpl implements TypeRoomService {
@@ -18,7 +20,7 @@ public class TypeRoomServiceImpl implements TypeRoomService {
 
     @Override
     public TypeRoom findByUuid(String uuid) {
-        return typeRoomRep.findByUuid(uuid);
+        return typeRoomRep.findByUuid(UUID.fromString(uuid));
     }
 
     @Override
@@ -42,8 +44,10 @@ public class TypeRoomServiceImpl implements TypeRoomService {
     }
 
     @Override
-    public TypeRoom save(TypeRoom entity) {
-        return typeRoomRep.save(entity);
+    public TypeRoom save(TypeRoom typeRoom) {
+        typeRoom.setUuid(UUID.randomUUID());
+        typeRoom.setDescription("description : "+typeRoom.getName());
+        return typeRoomRep.save(typeRoom);
     }
 
     @Override
@@ -59,5 +63,22 @@ public class TypeRoomServiceImpl implements TypeRoomService {
     @Override
     public boolean existsByName(String name) {
         return existsByName(name);
+    }
+    @Override
+    public void add() {
+        List<String> strings = new ArrayList<>();
+        strings.add("Standard Double Room");
+        strings.add("Standard Single Room");
+        strings.add("Triple Room");
+        strings.add("Junior Suite");
+        strings.add("Superior Double Room");
+        strings.add("Family Suite");
+        strings.add("Family Room with Sea View");
+        strings.add("Presidential Suite");
+        strings.forEach(s -> {
+            TypeRoom roomType = new TypeRoom();
+            roomType.setName(s);
+            this.save(roomType);
+        });
     }
 }

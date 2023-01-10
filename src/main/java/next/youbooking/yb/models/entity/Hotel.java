@@ -27,7 +27,7 @@ public class Hotel implements Serializable {
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
     private List<Attachment> attachments;
-    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "hotel", cascade = {CascadeType.ALL, CascadeType.PERSIST})
     private List<BedRoom> bedRooms;
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
     private List<Offer> offers;
@@ -86,7 +86,6 @@ public class Hotel implements Serializable {
         this.attachments = attachments;
     }
 
-    @JsonIgnore
     public List<BedRoom> getBedRooms() {
         return bedRooms;
     }
@@ -94,6 +93,7 @@ public class Hotel implements Serializable {
     public void setBedRooms(List<BedRoom> bedRooms) {
         this.bedRooms = bedRooms;
     }
+
     @JsonIgnore
     public List<Offer> getOffers() {
         return offers;
@@ -120,6 +120,7 @@ public class Hotel implements Serializable {
                 ", user=" + user +
                 ", address=" + address +
                 ", attachments=" + attachments +
+                ", bedRooms=" + bedRooms +
                 ", stateHotel=" + stateHotel +
                 '}';
     }

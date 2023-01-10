@@ -6,15 +6,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface UserService {
-    User findByUuid(String uuid);
+    User findByUuid(UUID uuid);
 
     User findByCin(String cin);
 
     User findByEmail(String email);
 
-    int deleteByUuid(String uuid);
+    int deleteByUuid(UUID uuid);
 
     List<User> findAll();
 
@@ -34,4 +35,6 @@ public interface UserService {
     int deleteByUsername(String username);
 
     int deleteByEmail(String email);
+
+    User changeState(UUID uuid, String state);
 }

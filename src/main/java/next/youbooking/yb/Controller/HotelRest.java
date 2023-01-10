@@ -2,8 +2,10 @@ package next.youbooking.yb.Controller;
 
 import next.youbooking.yb.exception.BadRequestException;
 import next.youbooking.yb.models.entity.Hotel;
+import next.youbooking.yb.models.vo.HotelVo;
 import next.youbooking.yb.security.models.domains.ResponseObject;
 import next.youbooking.yb.service.HotelService;
+import next.youbooking.yb.service.TypeRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,13 +15,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
-@RequestMapping("${api.endpoint}/hotel")
+@RequestMapping("${api.endpoint}/hotels")
 public class HotelRest {
     @Autowired
     HotelService hotelService;
+    @Autowired
+    TypeRoomService typeRoomService;
 
     @GetMapping("/state")
     public ResponseEntity<ResponseObject<?>> findByStateHotel(@RequestParam(name = "state") String stateHotel) {
@@ -107,6 +112,13 @@ public class HotelRest {
                 "Find all", hotelService.findAll());
         return new ResponseEntity<>(responseObject, HttpStatus.OK);
     }
+    @GetMapping("/principal")
+    public ResponseEntity<ResponseObject<?>> getAll(Principal principal) {
+//        this.typeRoomService.add();
+        ResponseObject<List<Hotel>> responseObject = new ResponseObject<>(false,
+                "Find all by principal", hotelService.findAll(principal.getName()));
+        return new ResponseEntity<>(responseObject, HttpStatus.OK);
+    }
 
     @GetMapping("/pageable")
     public ResponseEntity<ResponseObject<?>> findAll(Pageable pageable) {
@@ -126,15 +138,30 @@ public class HotelRest {
     }
 
     @PostMapping("/")
-    public ResponseEntity<ResponseObject<?>> save(@RequestBody Hotel country) {
+    public ResponseEntity<ResponseObject<?>> save(@RequestBody Hotel hotel) {
         try {
-            Hotel save = hotelService.save(country);
+            Hotel save = hotelService.save(hotel);
             ResponseObject<Hotel> responseObject = new ResponseObject<>(true,
                     "save hotel!!", save);
             return new ResponseEntity<>(responseObject, HttpStatus.OK);
         } catch (BadRequestException e) {
             ResponseObject<Hotel> responseObject = new ResponseObject<>(false,
-                    e.getMessage(), country);
+                    e.getMessage(), hotel);
+            return new ResponseEntity<>(responseObject, HttpStatus.BAD_REQUEST);
+        }
+    }
+    @PostMapping("/save")
+    public ResponseEntity<ResponseObject<?>> saveHotel(@RequestBody HotelVo hotel, Principal principal) {
+        System.out.println("saveHotel");
+        System.out.println(hotel);
+        try {
+            Hotel save = hotelService.saveHotel(hotel, principal.getName());
+            ResponseObject<Hotel> responseObject = new ResponseObject<>(true,
+                    "save hotel!!", save);
+            return new ResponseEntity<>(responseObject, HttpStatus.OK);
+        } catch (BadRequestException e) {
+            ResponseObject<HotelVo> responseObject = new ResponseObject<>(false,
+                    e.getMessage(), hotel);
             return new ResponseEntity<>(responseObject, HttpStatus.BAD_REQUEST);
         }
     }

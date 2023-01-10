@@ -1,6 +1,7 @@
 package next.youbooking.yb.service;
 
 import next.youbooking.yb.models.entity.Hotel;
+import next.youbooking.yb.models.vo.HotelVo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +26,7 @@ public interface HotelService {
     Page<Hotel> findAllByUserUsername(String username, PageRequest pageRequest);
 
     List<Hotel> findAll();
+    List<Hotel> findAll(String username);
 
     Page<Hotel> findAll(Pageable pageable);
 
@@ -40,4 +42,6 @@ public interface HotelService {
     boolean existsByName(String name);
 
     boolean existsByUuid(String code);
+
+    Hotel saveHotel(HotelVo hotel, String username);
 }

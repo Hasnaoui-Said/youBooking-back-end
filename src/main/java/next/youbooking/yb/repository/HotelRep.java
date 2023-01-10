@@ -25,4 +25,5 @@ public interface HotelRep extends JpaRepository<Hotel, UUID> {
     boolean existsByName(String name);
 
     boolean existsByUuid(String uuid);
+
 }

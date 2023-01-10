@@ -8,6 +8,6 @@ import java.util.UUID;
 
 @Repository
 public interface TypeRoomRep extends JpaRepository<TypeRoom, UUID> {
-    TypeRoom findByUuid(String uuid);
+    TypeRoom findByUuid(UUID uuid);
     int deleteByUuid(String uuid);
 }

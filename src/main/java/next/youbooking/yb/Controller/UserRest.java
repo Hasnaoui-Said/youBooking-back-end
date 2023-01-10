@@ -14,16 +14,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("${api.endpoint}/user")
+@RequestMapping("${api.endpoint}/users")
 public class UserRest {
     @Autowired
     UserService userService;
 
     @GetMapping("/uuid")
-    public User findByUuid(@RequestParam(name = "uuid") String uuid) {
+    public User findByUuid(@RequestParam(name = "uuid") UUID uuid) {
         return userService.findByUuid(uuid);
     }
 
@@ -38,7 +39,7 @@ public class UserRest {
     }
 
     @DeleteMapping("/uuid")
-    public int deleteByUuid(@RequestParam(name = "uuid") String uuid) {
+    public int deleteByUuid(@RequestParam(name = "uuid") UUID uuid) {
         return userService.deleteByUuid(uuid);
     }
 
@@ -104,6 +105,20 @@ public class UserRest {
         } catch (BadRequestException e) {
             ResponseObject<User> responseObject = new ResponseObject<>(false,
                     e.getMessage(), user);
+            return new ResponseEntity<>(responseObject, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/state/{uuid}") @ResponseBody
+    public ResponseEntity<ResponseObject<?>> changeState(@RequestBody String state, @PathVariable(name = "uuid") UUID uuid) {
+        try {
+            User save = userService.changeState(uuid, state);
+            ResponseObject<User> responseObject = new ResponseObject<>(true,
+                    "Update state from user!!", save);
+            return new ResponseEntity<>(responseObject, HttpStatus.OK);
+        } catch (BadRequestException e) {
+            ResponseObject<UUID> responseObject = new ResponseObject<>(false,
+                    e.getMessage(), uuid);
             return new ResponseEntity<>(responseObject, HttpStatus.BAD_REQUEST);
         }
     }

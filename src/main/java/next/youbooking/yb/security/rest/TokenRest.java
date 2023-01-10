@@ -88,11 +88,10 @@ public class TokenRest {
 
     @PostMapping("/sign_in")
     public ResponseEntity<ResponseObject<?>> save(@RequestBody User user, @RequestParam(name = "role") String role) {
-
         try {
             User save = userService.save(user, role);
             ResponseObject<User> responseObject = new ResponseObject<>(true,
-                    "User saved successfully", save);
+                    "Account saved successfully", save);
             return new ResponseEntity<>(responseObject, HttpStatus.OK);
         } catch (BadRequestException e) {
             System.out.println(this);

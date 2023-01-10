@@ -9,10 +9,10 @@ import java.util.UUID;
 
 @Repository
 public interface UserRep extends JpaRepository<User, UUID> {
-    User findByUuid(String uuid);
+    User findByUuid(UUID uuid);
     User findByCin(String cin);
     User findByEmail(String email);
-    int deleteByUuid(String uuid);
+    int deleteByUuid(UUID uuid);
 
     boolean existsByUsername(String username);
 

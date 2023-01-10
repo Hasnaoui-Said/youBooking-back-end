@@ -14,6 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,7 +32,7 @@ public class UserServiceImpl implements UserService {
     RoleService roleService;
 
     @Override
-    public User findByUuid(String uuid) {
+    public User findByUuid(UUID uuid) {
         return userRep.findByUuid(uuid);
     }
 
@@ -45,7 +47,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int deleteByUuid(String uuid) {
+    public int deleteByUuid(UUID uuid) {
         return userRep.deleteByUuid(uuid);
     }
 
@@ -76,13 +78,24 @@ public class UserServiceImpl implements UserService {
         user.setPassword(UtilString.passwordEncoder(user.getPassword()));
         user.setCreatedAt(new Date());
         user.setUpdatedAt(new Date());
+        if (role.equals("client"))
+            user.setAccountState("ACTIVATED");
+        else
+            user.setAccountState("PENDING");
 
-        User userNv = userRep.save(user);
         Role roleObject = roleService.findByName(role.toUpperCase());
-        UsersRoles usersRoles = usersRolesService.save(roleObject, userNv);
-
-        userNv.setRoles(new ArrayList<>());
-        userNv.getRoles().add(usersRoles);
+        if (roleObject == null) {
+            throw new BadRequestException("Error leur de l'insertion!");
+        }
+        User userNv = userRep.save(user);
+        try {
+            UsersRoles usersRoles = usersRolesService.save(roleObject, userNv);
+            userNv.setRoles(new ArrayList<>());
+            userNv.getRoles().add(usersRoles);
+        } catch (Exception e) {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            throw e;
+        }
         return userNv;
     }
 
@@ -109,5 +122,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public int deleteByEmail(String email) {
         return userRep.deleteByEmail(email);
+    }
+
+    @Override
+    @Transactional
+    public User changeState(UUID uuid, String state) {
+        User user = this.findByUuid(uuid);
+        if (user == null)
+            throw new BadRequestException("user with this parameter not fount!!");
+        user.setAccountState(state);
+        return user;
     }
 }

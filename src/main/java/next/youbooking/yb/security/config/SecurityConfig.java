@@ -2,7 +2,7 @@ package next.youbooking.yb.security.config;
 
 import next.youbooking.yb.security.exception.AccessDeniedExceptionHandler;
 import next.youbooking.yb.security.filter.JwtAuthenticationFilter;
-import next.youbooking.yb.security.filter.JwtAutorizationFilter;
+import next.youbooking.yb.security.filter.JwtAuthorizationFilter;
 import next.youbooking.yb.security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -57,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 2- use annotation in application EnableGlobalMethodSecurity and any method PostAuthorize(hasAuth(''))
                 .and().authorizeRequests()
                 .antMatchers("/**/jeton/**").permitAll()
-                .antMatchers("/**/user/**").permitAll()
+//                .antMatchers("/**/users/**").permitAll()
                 // any request accused with authenticated
                 .anyRequest().authenticated()
                 // integrate filter to my app
@@ -66,7 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(corsFilter())
                 .addFilter(new JwtAuthenticationFilter(authenticationManagerBean()))
                 // notion middleware: filter second->  communique with other app as a passerelle
-                .addFilterBefore(new JwtAutorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 
     }
 

@@ -22,15 +22,15 @@ public class User implements Serializable {
     private UUID uuid;
     @Id
     @Column(unique = true, name = "username")
-    @Size(min = 4, max = 20)
+    @Size(min = 2, max = 20)
     @NotEmpty @NotNull
     private String username;
     @Column(unique = true)
-    @Size(min = 8, max = 50)
+    @Size(min = 2, max = 50)
     @NotEmpty @NotNull
     private String email;
     //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Size(min = 4, max = 15)
+    @Size(min = 4, max = 255)
     @NotEmpty @NotNull
     private String password;
     private String phone;
@@ -49,6 +49,7 @@ public class User implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh-mm-ss")
     protected Date updatedAt;
     private boolean isActive;
+    private String accountState;
     @OneToMany(mappedBy = "username", fetch = FetchType.EAGER)
     private List<UsersRoles> roles;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -105,6 +106,14 @@ public class User implements Serializable {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public String getAccountState() {
+        return accountState;
+    }
+
+    public void setAccountState(String accountState) {
+        this.accountState = accountState;
     }
 
     public String getLastName() {
@@ -187,6 +196,7 @@ public class User implements Serializable {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", isActive=" + isActive +
+                ", accountState=" + accountState +
                 ", roles=" + roles +
                 '}';
     }

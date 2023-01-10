@@ -25,4 +25,6 @@ public interface TypeRoomService {
     boolean existsByUuid(String uuid);
 
     boolean existsByName(String name);
+
+    void add();
 }
