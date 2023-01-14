@@ -17,7 +17,7 @@ public interface HotelRep extends JpaRepository<Hotel, UUID> {
     Hotel findByStateHotel(String stateHotel);
     Hotel findByAddress(String address);
     int deleteByName(String name);
-    Hotel findByUuid(String uuid);
+    Hotel findByUuid(UUID uuid);
     int deleteByUuid(String uuid);
     List<Hotel> findAllByUserUsername(String username);
     Page<Hotel> findAllByUserUsername(String username, PageRequest pageRequest);

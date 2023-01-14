@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("${api.endpoint}/hotels")
@@ -41,7 +42,7 @@ public class HotelRest {
     }
 
     @GetMapping("/uuid")
-    public ResponseEntity<ResponseObject<?>> findByUuid(@RequestParam(name = "uuid") String uuid) {
+    public ResponseEntity<ResponseObject<?>> findByUuid(@RequestParam(name = "uuid") UUID uuid) {
         ResponseObject<Hotel> responseObject = new ResponseObject<>(true,
                 "find by name", hotelService.findByUuid(uuid));
         return new ResponseEntity<>(responseObject, HttpStatus.OK);
@@ -152,8 +153,6 @@ public class HotelRest {
     }
     @PostMapping("/save")
     public ResponseEntity<ResponseObject<?>> saveHotel(@RequestBody HotelVo hotel, Principal principal) {
-        System.out.println("saveHotel");
-        System.out.println(hotel);
         try {
             Hotel save = hotelService.saveHotel(hotel, principal.getName());
             ResponseObject<Hotel> responseObject = new ResponseObject<>(true,

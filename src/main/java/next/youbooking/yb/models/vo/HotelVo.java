@@ -6,7 +6,7 @@ public class HotelVo {
     private String name;
     private String description;
     private AddressVo address;
-    private AttachmentVo attachment;
+    private List<AttachmentVo> attachments;
     private List<BedRoomVo> bedRooms;
 
     public String getName() {
@@ -33,12 +33,12 @@ public class HotelVo {
         this.address = address;
     }
 
-    public AttachmentVo getAttachment() {
-        return attachment;
+    public List<AttachmentVo> getAttachments() {
+        return attachments;
     }
 
-    public void setAttachment(AttachmentVo attachment) {
-        this.attachment = attachment;
+    public void setAttachments(List<AttachmentVo> attachments) {
+        this.attachments = attachments;
     }
 
     public List<BedRoomVo> getBedRooms() {
@@ -58,7 +58,7 @@ public class HotelVo {
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", address=" + address +
-                ", attachment=" + attachment +
+                ", attachments=" + attachments +
                 ", bedRooms=" + bedRooms +
                 '}';
     }

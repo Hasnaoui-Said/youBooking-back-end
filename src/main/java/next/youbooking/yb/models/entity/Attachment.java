@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,6 +24,7 @@ public class Attachment implements Serializable {
     private Hotel hotel;
 
     public Attachment() {
+        this.documents = new ArrayList<>();
     }
 
     public UUID getUuid() {

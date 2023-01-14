@@ -1,23 +1,18 @@
 package next.youbooking.yb.models.vo;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class DocumentVo {
-    private String type;
+    private MultipartFile image;
 
     public DocumentVo() {
     }
 
-    public String getType() {
-        return type;
+    public MultipartFile getImage() {
+        return image;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    @Override
-    public String toString() {
-        return "DocumentVo{" +
-                "type='" + type + '\'' +
-                '}';
+    public void setImage(MultipartFile image) {
+        this.image = image;
     }
 }

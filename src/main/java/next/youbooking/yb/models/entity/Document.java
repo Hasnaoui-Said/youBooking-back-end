@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.UUID;
 
 @Entity
@@ -15,7 +16,7 @@ public class Document implements Serializable {
     @Column(unique = true, name = "uuid")
     private UUID uuid;
     private String type;
-//    private doc doc;
+    private byte[] image;
     @ManyToOne
     private Attachment attachment;
 
@@ -43,6 +44,14 @@ public class Document implements Serializable {
         return attachment;
     }
 
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
     public void setAttachment(Attachment attachment) {
         this.attachment = attachment;
     }
@@ -52,6 +61,7 @@ public class Document implements Serializable {
         return "Document{" +
                 "uuid=" + uuid +
                 ", type='" + type + '\'' +
+                ", image=" + Arrays.toString(image) +
                 '}';
     }
 }

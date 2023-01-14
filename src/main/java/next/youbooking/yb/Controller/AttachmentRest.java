@@ -9,11 +9,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("${api.endpoint}/attachment")
@@ -22,12 +25,13 @@ public class AttachmentRest {
     AttachmentService attachmentService;
 
     @GetMapping("/uuid")
-    public ResponseEntity<ResponseObject<?>> findByUuid(@RequestParam(name = "uuid", defaultValue = "") String uuid) {
+    public ResponseEntity<ResponseObject<?>> findByUuid(@RequestParam UUID uuid) {
         Attachment attachment = attachmentService.findByUuid(uuid);
         ResponseObject<Attachment> responseObject = new ResponseObject<>(true,
                 "find all!!", attachment);
         return new ResponseEntity<>(responseObject, HttpStatus.OK);
     }
+
     @GetMapping("/hotel/uuid")
     public ResponseEntity<ResponseObject<?>> findAllByHotelUuid(@RequestParam(name = "uuid", defaultValue = "") String uuid) {
         List<Attachment> attachments = attachmentService.findAllByHotelUuid(uuid);
@@ -49,7 +53,7 @@ public class AttachmentRest {
         int res = attachmentService.deleteByUuid(uuid);
         boolean success = true;
         String message = "Attachment Delete successfully";
-        if (res != 1){
+        if (res != 1) {
             success = false;
             message = "This Attachment with this parameter not found";
         }
@@ -96,6 +100,21 @@ public class AttachmentRest {
             return new ResponseEntity<>(responseObject, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PostMapping(value = "/uuid/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseObject<?>> saveDocByUuidAttachment(@RequestPart List<MultipartFile> images, @RequestPart String uuid) {
+        try {
+            Attachment attachment = this.attachmentService.updateAttachment(UUID.fromString(uuid), images);
+            ResponseObject<Attachment> responseObject = new ResponseObject<>(true,
+                    "Attachment updated successfully", attachment);
+            return new ResponseEntity<>(responseObject, HttpStatus.OK);
+        } catch (BadRequestException e) {
+            ResponseObject<String> responseObject = new ResponseObject<>(false,
+                    e.getMessage(), uuid);
+            return new ResponseEntity<>(responseObject, HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @PutMapping("/")
     public ResponseEntity<ResponseObject<?>> update(@RequestBody Attachment attachment) {
         try {

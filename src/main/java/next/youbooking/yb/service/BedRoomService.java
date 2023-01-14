@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface BedRoomService {
     BedRoom findByUuid(String uuid);
@@ -33,4 +34,6 @@ public interface BedRoomService {
     BedRoom save(BedRoom bedRoom);
 
     BedRoom update(BedRoom bedRoom);
+
+    BedRoom saveBedRoom(BedRoom bedRoom, UUID uuid);
 }

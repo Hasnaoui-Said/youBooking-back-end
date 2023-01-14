@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface HotelService {
     Hotel findByName(String name);
@@ -17,7 +18,7 @@ public interface HotelService {
 
     int deleteByName(String name);
 
-    Hotel findByUuid(String uuid);
+    Hotel findByUuid(UUID uuid);
 
     int deleteByUuid(String uuid);
 

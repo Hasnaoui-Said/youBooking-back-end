@@ -10,7 +10,7 @@ import java.util.UUID;
 @Repository
 public interface AttachmentRep extends JpaRepository<Attachment, UUID> {
 
-    Attachment findByUuid(String uuid);
+    Attachment findByUuid(UUID uuid);
 
     List<Attachment> findAllByHotelUuid(String uuid);
 

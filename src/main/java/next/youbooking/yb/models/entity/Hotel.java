@@ -6,6 +6,7 @@ import next.youbooking.yb.security.models.entity.User;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,6 +36,8 @@ public class Hotel implements Serializable {
     private StateHotel stateHotel;
 
     public Hotel() {
+        this.attachments = new ArrayList<>();
+        this.bedRooms = new ArrayList<>();
     }
 
     public UUID getUuid() {

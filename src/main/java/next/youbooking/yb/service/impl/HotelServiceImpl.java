@@ -1,6 +1,7 @@
 package next.youbooking.yb.service.impl;
 
 import next.youbooking.yb.exception.BadRequestException;
+import next.youbooking.yb.exception.ServiceUnavailableException;
 import next.youbooking.yb.models.entity.*;
 import next.youbooking.yb.models.enums.StateHotel;
 import next.youbooking.yb.models.enums.StatusRoom;
@@ -10,14 +11,14 @@ import next.youbooking.yb.models.vo.HotelVo;
 import next.youbooking.yb.repository.HotelRep;
 import next.youbooking.yb.security.models.entity.User;
 import next.youbooking.yb.security.service.UserDetailsServiceImpl;
-import next.youbooking.yb.service.CityService;
-import next.youbooking.yb.service.HotelService;
-import next.youbooking.yb.service.TypeRoomService;
+import next.youbooking.yb.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,10 @@ public class HotelServiceImpl implements HotelService {
     CityService cityService;
     @Autowired
     TypeRoomService typeRoomService;
+    @Autowired
+    private AttachmentService attachmentService;
+    @Autowired
+    private BedRoomService bedRoomService;
 
     @Override
     public Hotel findByName(String name) {
@@ -55,7 +60,7 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public Hotel findByUuid(String uuid) {
+    public Hotel findByUuid(UUID uuid) {
         return hotelRep.findByUuid(uuid);
     }
 
@@ -120,24 +125,44 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
+    @Transactional
     public Hotel saveHotel(HotelVo hotel, String username) {
-        Hotel hotel1 = new Hotel();
+
+        Hotel saveHotel = new Hotel();
         User user = this.checkUser(username);
-        hotel1.setUser(user);
+        saveHotel.setUser(user);
 
         Address address = this.getAddressFromHotel(hotel.getAddress());
 
+        saveHotel.setAddress(address);
+        saveHotel.setUuid(UUID.randomUUID());
+        saveHotel.setName(hotel.getName());
+        saveHotel.setDescription(hotel.getDescription());
+        saveHotel.setStateHotel(StateHotel.OPEN);
+
+        saveHotel = this.hotelRep.save(saveHotel);
+        Hotel finalSaveHotel = saveHotel;
+        hotel.getAttachments().forEach(attachmentVo -> {
+            try {
+                Attachment attachment = this.attachmentService.saveAtt(attachmentVo.getTitle(), attachmentVo.getDescription(), finalSaveHotel.getUuid());
+                finalSaveHotel.getAttachments().add(attachment);
+            }catch (Exception e) {
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                throw new ServiceUnavailableException(e.getMessage());
+            }
+        });
+
         ArrayList<BedRoom> bedRooms = getBedRoom(hotel.getBedRooms());
-        hotel1.setBedRooms(bedRooms);
-
-        hotel1.setAddress(address);
-        hotel1.setUuid(UUID.randomUUID());
-        hotel1.setName(hotel.getName());
-        hotel1.setDescription(hotel.getDescription());
-        hotel1.setStateHotel(StateHotel.OPEN);
-
-//        return this.hotelRep.save(hotel1);
-        return hotel1;
+        bedRooms.forEach(bedRoom -> {
+            try {
+                BedRoom room = this.bedRoomService.saveBedRoom(bedRoom, finalSaveHotel.getUuid());
+                finalSaveHotel.getBedRooms().add(room);
+            }catch (Exception e) {
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                throw new ServiceUnavailableException(e.getMessage());
+            }
+        });
+        return finalSaveHotel;
     }
 
     private ArrayList<BedRoom> getBedRoom(List<BedRoomVo> bedRoomsVo) {

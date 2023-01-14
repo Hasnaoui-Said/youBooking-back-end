@@ -5,12 +5,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public interface AttachmentService {
-    public Attachment findByUuid(String uuid);
+    public Attachment findByUuid(UUID uuid);
 
     public List<Attachment> findAllByHotelUuid(String uuid);
 
@@ -28,4 +30,8 @@ public interface AttachmentService {
     Attachment update(Attachment attachment);
 
     boolean existsByTitle(String titre);
+
+    Attachment updateAttachment(UUID uuid, List<MultipartFile> images);
+
+    Attachment saveAtt(String title, String description, UUID uuidHotel);
 }

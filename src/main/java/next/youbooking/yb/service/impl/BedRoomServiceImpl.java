@@ -1,8 +1,11 @@
 package next.youbooking.yb.service.impl;
 
+import next.youbooking.yb.exception.ServiceUnavailableException;
 import next.youbooking.yb.models.entity.BedRoom;
+import next.youbooking.yb.models.entity.Hotel;
 import next.youbooking.yb.repository.BedRoomRep;
 import next.youbooking.yb.service.BedRoomService;
+import next.youbooking.yb.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,11 +13,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class BedRoomServiceImpl implements BedRoomService {
     @Autowired
     BedRoomRep bedRoomRep;
+    @Autowired
+    HotelService hotelService;
 
     @Override
     public BedRoom findByUuid(String uuid) {
@@ -79,5 +85,15 @@ public class BedRoomServiceImpl implements BedRoomService {
     @Override
     public BedRoom update(BedRoom bedRoom) {
         return null;
+    }
+
+    @Override
+    public BedRoom saveBedRoom(BedRoom bedRoom, UUID uuid) {
+
+        Hotel hotel = this.hotelService.findByUuid(uuid);
+        if (hotel == null)
+            throw new ServiceUnavailableException("Hotel not found with UUID: " + uuid);
+        bedRoom.setHotel(hotel);
+        return this.bedRoomRep.save(bedRoom);
     }
 }
