@@ -1,5 +1,5 @@
 package next.youbooking.yb.models.enums;
 
 public enum StatusOffer {
-    PENDING, ACCEPTED
+    PENDING, ACCEPTED, REJECTED
 }

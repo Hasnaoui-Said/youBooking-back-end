@@ -1,6 +1,5 @@
 package next.youbooking.yb.models.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import next.youbooking.yb.models.enums.StatusOffer;
 
 import javax.persistence.*;
@@ -15,6 +14,7 @@ public class Offer implements Serializable {
     private UUID uuid;
     private String title;
     private String description;
+    private String sub_description;
     @Enumerated(EnumType.STRING)
     private StatusOffer status;
     @ManyToOne
@@ -33,6 +33,14 @@ public class Offer implements Serializable {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getSub_description() {
+        return sub_description;
+    }
+
+    public void setSub_description(String sub_description) {
+        this.sub_description = sub_description;
     }
 
     public void setTitle(String title) {
@@ -69,6 +77,7 @@ public class Offer implements Serializable {
                 "uuid=" + uuid +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
+                ", sub_description='" + sub_description + '\'' +
                 ", status=" + status +
                 ", hotel=" + hotel +
                 '}';

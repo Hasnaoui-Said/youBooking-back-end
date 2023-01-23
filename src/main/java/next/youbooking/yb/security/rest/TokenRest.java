@@ -82,8 +82,10 @@ public class TokenRest {
 
 
     @GetMapping("/profile")
-    public User getProfile(Principal principal) {
-        return userDetailsService.findByUsername(principal.getName());
+    public ResponseEntity<ResponseObject<?>> getProfile(Principal principal) {
+        ResponseObject<User> responseObject = new ResponseObject<>(true,
+                "Account saved successfully", userDetailsService.findByUsername(principal.getName()));
+        return new ResponseEntity<>(responseObject, HttpStatus.OK);
     }
 
     @PostMapping("/sign_in")
