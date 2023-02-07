@@ -1,7 +1,6 @@
 package next.youbooking.yb.service;
 
 import next.youbooking.yb.models.entity.Offer;
-import next.youbooking.yb.models.enums.StatusOffer;
 import next.youbooking.yb.models.vo.OfferStateVo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

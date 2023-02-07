@@ -1,0 +1,2 @@
+CREATE DATABASE docker;
+GRANT ALL PRIVILEGES ON DATABASE db_you_booking TO postgres;

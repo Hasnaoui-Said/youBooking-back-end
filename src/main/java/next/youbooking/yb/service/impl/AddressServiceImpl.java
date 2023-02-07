@@ -54,10 +54,10 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public  Address save(Address address) {
-        if (existsByAddress(address.getAddress()))
-            throw new BadRequestException("Address with this parameter already exist!!");
         if (address == null)
             throw new BadRequestException("Address null!!");
+        if (existsByAddress(address.getAddress()))
+            throw new BadRequestException("Address with this parameter already exist!!");
         if (address.getAddress().equals(""))
             throw new BadRequestException("Address required!!");
         address.setUuid(UUID.randomUUID());

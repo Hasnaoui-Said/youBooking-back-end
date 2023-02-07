@@ -1,0 +1,73 @@
+name: youbooking
+services:
+  app1:
+    build:
+      context: /opt/lampp/htdocs/www/ideaProject/youBooking-back-end
+      dockerfile: Dockerfile
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      default:
+        name: youbooking
+    ports:
+      - mode: ingress
+        target: 9090
+        published: "9090"
+        protocol: tcp
+  database:
+    environment:
+      POSTGRES_DB: yb_booking_db
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U postgres -d yb_booking_db
+      timeout: 5s
+      interval: 30s
+      retries: 3
+    image: postgres
+    networks:
+      default:
+        name: youbooking
+    ports:
+      - mode: ingress
+        target: 5432
+        published: "5432"
+        protocol: tcp
+#  pgadmin:
+#    environment:
+#      PGADMIN_DEFAULT_EMAIL: saidhasnaoui.uce@gmail.com
+#      PGADMIN_DEFAULT_PASSWORD: postgres
+#    image: dpage/pgadmin4
+#    networks:
+#      default:
+#        name: youbooking
+#    ports:
+#      - mode: ingress
+#        target: 80
+#        published: "5050"
+#        protocol: tcp
+networks:
+  default:
+    name: youbooking
+
+
+#version: '3.3'
+#services:
+#  app:
+#    build: .
+#    ports:
+#      - "9090:9090"
+#    depends_on:
+#      - database
+#
+#  database:
+#    image: postgres:latest
+#    environment:
+#      - POSTGRES_USER=postgres
+#      - POSTGRES_PASSWORD=postgres
+#      - POSTGRES_DB=yb_booking_db
+#    ports:
+#      - "127.0.0.0:5432:5432"

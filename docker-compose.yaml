@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  backend:
+    build: .
+    ports:
+      - "9090:9090"
+    depends_on:
+      - database
+    environment:
+      DB_URL: jdbc:postgresql://database:5432/yb_booking_db
+  database:
+    image: postgres
+    environment:
+      POSTGRES_DB: yb_booking_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5432:5432"
